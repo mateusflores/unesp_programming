@@ -9,9 +9,16 @@ typedef struct aluno {
     struct aluno *prox;
 } Aluno;
 
+double calculaMedia (Aluno *node) {
+    return (node->notaEx + node->np1 + node->np2)/3;
+}
+
 int quantidadeAlunos(Aluno *head) {
-    int num = 0;
+    int num;
     Aluno *aux = head;
+
+    num = (aux != NULL) ? 1 : 0;
+
     while (aux->prox != NULL) {
         num++;
         aux = aux->prox;
@@ -28,7 +35,7 @@ Aluno* addAlunos(int quantidadeAlunos) {
         aux->matricula = i+1;
         getc(stdin);
         puts("Nome: ");
-        fgets(aux->nome, 30, stdin);
+        fscanf(stdin, "%s", aux->nome);
         puts("Nota da prova 1: ");
         scanf("%lf", &aux->np1);
         puts("Nota da prova 2: ");
@@ -48,13 +55,12 @@ Aluno* addAlunos(int quantidadeAlunos) {
 
 void imprimeLista (Aluno *head) {
     Aluno *aux;
-    puts("\nNome  Matricula   N1  N2  NotaEx");
+    puts("\n|   Nome   |   Matricula   |   N1   |   N2   |   NotaEx   |");
+    puts("-----------------------------------------------------------");
     for (aux=head; aux != NULL; aux = aux->prox) {
-        printf("%s  %d  %lf  %lf  %lf\n", aux->nome, aux->matricula, aux->np1, aux->np2, aux->notaEx);
+        printf("|   %s   |   %d   |   %.2lf   |   %.2lf   |   %.2lf   |\n", aux->nome, aux->matricula, aux->np1, aux->np2, aux->notaEx);
     }
 }
-
-
 
 int main() {
     int quant;
