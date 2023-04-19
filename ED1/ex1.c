@@ -53,6 +53,24 @@ Aluno* addAlunos(int quantidadeAlunos) {
     return head;
 }
 
+Aluno* deletarAluno(Aluno *head, int id) {
+    Aluno *aux = head;
+    Aluno *anterior;
+
+    while (aux->matricula != id) {
+        anterior = aux;
+        aux = aux->prox;
+    }
+
+    if (aux->matricula == head->matricula) {
+        aux = aux->prox;
+        return aux;
+    } else {
+        anterior->prox = aux->prox;
+        return head;
+    }
+}
+
 void imprimeLista (Aluno *head) {
     Aluno *aux;
     for (aux=head; aux != NULL; aux = aux->prox) {
