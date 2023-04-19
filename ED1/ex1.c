@@ -35,7 +35,7 @@ Aluno* addAlunos(int quantidadeAlunos) {
         aux->matricula = i+1;
         getc(stdin);
         puts("Nome: ");
-        fscanf(stdin, "%s", aux->nome);
+        fgets(aux->nome, 30, stdin);
         puts("Nota da prova 1: ");
         scanf("%lf", &aux->np1);
         puts("Nota da prova 2: ");
@@ -55,11 +55,12 @@ Aluno* addAlunos(int quantidadeAlunos) {
 
 void imprimeLista (Aluno *head) {
     Aluno *aux;
-    puts("\n|   Nome   |   Matricula   |   N1   |   N2   |   NotaEx   |");
-    puts("-----------------------------------------------------------");
     for (aux=head; aux != NULL; aux = aux->prox) {
-        printf("|   %s   |   %d   |   %.2lf   |   %.2lf   |   %.2lf   |\n", aux->nome, aux->matricula, aux->np1, aux->np2, aux->notaEx);
+        puts("\n-----------------------------------------------------------------------------------\n");
+        printf("Nome: %s", aux->nome);
+        printf("Matricula: %2d   |   Nota P1: %.2lf   |   Nota P2: %.2lf   |   Nota Exercicios: %.2lf   \n", aux->matricula, aux->np1, aux->np2, aux->notaEx);
     }
+    puts("\n-----------------------------------------------------------------------------------\n");
 }
 
 int main() {
