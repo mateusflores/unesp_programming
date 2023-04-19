@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef struct aluno {
     int matricula;
@@ -11,6 +12,25 @@ typedef struct aluno {
 
 double calculaMedia (Aluno *node) {
     return (node->notaEx + node->np1 + node->np2)/3;
+}
+
+void infoAlunos (Aluno *lista) {
+    Aluno *maiorP1 = lista, *maiorMedia = lista, *menorMedia = lista;
+    Aluno *aux;
+    for (aux = lista; aux != NULL; aux = aux->prox) {
+        if (aux->np1 > maiorP1->np1)
+            maiorP1 = aux;
+        
+        if (calculaMedia(aux) > calculaMedia(maiorMedia))
+            maiorMedia = aux;
+        
+        if (calculaMedia(aux) < calculaMedia(menorMedia))
+            menorMedia = aux;
+    }
+
+    printf("\n=>O aluno com ID %d possui a maior nota na prova 1 (%.2lf)", maiorP1->matricula, maiorP1->np1);
+    printf("\n=>O aluno com ID %d possui a maior media (%.2lf)", maiorMedia->matricula, calculaMedia(maiorMedia));
+    printf("\n=>O aluno com ID %d possui a menor media (%.2lf)\n", menorMedia->matricula, calculaMedia(menorMedia));
 }
 
 int quantidadeAlunos(Aluno *head) {
@@ -54,31 +74,91 @@ Aluno* addAlunos(int quantidadeAlunos) {
 }
 
 Aluno* deletarAluno(Aluno *head, int id) {
-    Aluno *aux = head;
-    Aluno *anterior;
+    Aluno *aux;
+    Aluno *anterior = NULL;
+    bool idExiste = false;
 
-    while (aux->matricula != id) {
+    for (aux = head; aux != NULL; aux = aux->prox) {
+        if (aux->matricula == id) {
+            idExiste = true;
+            break;
+        }
         anterior = aux;
-        aux = aux->prox;
     }
 
-    if (aux->matricula == head->matricula) {
-        aux = aux->prox;
-        return aux;
+    if (idExiste == false) {
+        puts("\n=> Nao foi encontrado nenhum aluno com o ID informado.");
+        return head;
+    } else if (aux->matricula == head->matricula) {
+        head = aux->prox;
+        free(aux);
+        printf("\n=> Aluno com ID %d removido com sucesso.\n", id);
+        return head;
     } else {
         anterior->prox = aux->prox;
+        free(aux);
+        printf("\n=> Aluno com ID %d removido com sucesso.\n", id);
         return head;
     }
 }
 
 void imprimeLista (Aluno *head) {
     Aluno *aux;
+    puts("\n---------------------------------LISTA DE ALUNOS----------------------------------\n");
     for (aux=head; aux != NULL; aux = aux->prox) {
-        puts("\n-----------------------------------------------------------------------------------\n");
         printf("Nome: %s", aux->nome);
         printf("Matricula: %2d   |   Nota P1: %.2lf   |   Nota P2: %.2lf   |   Nota Exercicios: %.2lf   \n", aux->matricula, aux->np1, aux->np2, aux->notaEx);
     }
     puts("\n-----------------------------------------------------------------------------------\n");
+}
+
+void exibirClassificados (Aluno *head) {
+    Aluno *aux;
+
+    puts("\nID      Situacao");
+    puts("---------------");
+    for (aux = head; aux != NULL; aux = aux->prox) {
+        printf("%2d\t", aux->matricula);
+
+        if (calculaMedia(aux) < 5)
+            printf("REPROVADO\n");
+        else 
+            printf("APROVADO\n");
+    }
+}
+
+void menuUsuario(Aluno *lista) {
+    int op = 0;
+    int id;
+
+    while (op != 6) {
+        puts("\n**** Selecione uma operacao ****\n1. Exibe lista de alunos\n2. Deleta aluno\n3. Mostra quantidade de alunos na turma");
+        puts("4. Ver aluno com maior nota na P1, maior media e menor media\n5. Ver alunos aprovados ou reprovados\n6. Sair\n");
+
+        scanf("%d", &op);
+
+        switch (op) {
+        case 1:
+            imprimeLista(lista);
+            break;
+        case 2: 
+            puts("Insira o ID do aluno a ser deletado:");
+            scanf("%d", &id);
+            lista = deletarAluno(lista, id);
+            break;
+        case 3:
+            printf("\n=> Existem %d alunos matriculados na turma.\n\n", quantidadeAlunos(lista));
+            break;
+        case 4:
+            infoAlunos(lista);
+            break;
+        case 5:
+            exibirClassificados(lista);
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 int main() {
@@ -91,7 +171,6 @@ int main() {
     } while (quant > 50);
 
     Aluno *lista = addAlunos(quant);
-    printf("Quantidade de alunos inseridos: %d", quantidadeAlunos(lista));
 
-    imprimeLista(lista);
+    menuUsuario(lista);
 }
