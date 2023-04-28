@@ -1,3 +1,5 @@
+// Mateus Gomes Flores  RA: 221150391
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -64,14 +66,14 @@ void removeItens(Stack *pilha) {
 }
 
 int premiaParticipante(Stack *pilha) {
-
     if (checkReverso(pilha->topo, pilha->topo->prox)) {
         removeItens(pilha);
         return 1;
     }
-    
+    return 0;
 }
 
+// Retorna a quantidade de pessoas premiadas
 int entradasPainel(Stack *pilha, int num) {
     int quantidadeGanhadores = 0;
     char frase[5];
@@ -79,12 +81,10 @@ int entradasPainel(Stack *pilha, int num) {
         fscanf(stdin, "%s", frase);
         insereItem(pilha, frase);
         quantidadeGanhadores += premiaParticipante(pilha);
+        checkTopoVazio(pilha);
     }
     return quantidadeGanhadores;
 }
-
-
-
 
 int main() {
     int quantidadeGanhadores = 0;
@@ -96,14 +96,5 @@ int main() {
 
     quantidadeGanhadores = entradasPainel(&pilha, num);
 
-
-
-    // TESTANDO ENTRADAS NA PILHA
-    for (Node *aux = pilha.topo; aux != NULL; aux = aux->prox) {
-        printf("\n%c %c %c %c", aux->a, aux->b, aux->c, aux->d);
-    }
-
-    printf("\nQuantidade de ganhadores: %d\n", quantidadeGanhadores);
-
-
+    printf("%d\n", quantidadeGanhadores);
 }
