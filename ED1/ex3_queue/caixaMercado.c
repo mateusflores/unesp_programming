@@ -18,6 +18,7 @@ typedef struct node {
 typedef struct {
     Node *inicio;
     Node *fim;
+    int nosInseridos;
 } Fila;
 
 bool verificaVazia (Fila *fila) {
@@ -28,6 +29,7 @@ bool verificaVazia (Fila *fila) {
 }
 
 void inicializaFila (Fila *fila) {
+    fila->nosInseridos = 0;
     fila->fim = NULL;
     fila->inicio = NULL;
 }
@@ -46,6 +48,7 @@ void insereCliente (Fila *fila, Cliente cliente) {
         fila->fim = aux;
         fila->fim->prox = NULL;
     }
+    fila->nosInseridos++;
 }
 
 // Remove o cliente que está no começo da fila
@@ -61,6 +64,7 @@ void removeCliente (Fila *fila) {
             fila->inicio->ant = NULL;
         }
         free(aux);
+        fila->nosInseridos--;
     }
 }
 
@@ -101,6 +105,8 @@ int main() {
         printf("\nNao Vazia\nTamanho: %d\n\n", tamanhoFila(fila));
     }
 
+    removeCliente(fila);
+    removeCliente(fila);
     removeCliente(fila);
 
     if (verificaVazia(fila))
