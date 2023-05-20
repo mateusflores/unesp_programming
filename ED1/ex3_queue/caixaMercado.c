@@ -32,12 +32,13 @@ void inicializaFila (Fila *fila) {
     fila->inicio = NULL;
 }
 
+// Insere o cliente no final da fila
 void insereCliente (Fila *fila, Cliente cliente) {
     Node *aux = (Node*) malloc(sizeof(Node));
     aux->cliente = cliente;
     aux->prox = NULL;
 
-    if (fila->inicio == fila->fim) {
+    if (fila->inicio == NULL) {
         fila->inicio = aux;
         fila->fim = aux;    
     } else {
@@ -46,7 +47,8 @@ void insereCliente (Fila *fila, Cliente cliente) {
     }
 }
 
-void removeCliente (Fila *fila, Node *cliente) {
+// Remove o cliente que está no começo da fila
+void removeCliente (Fila *fila) {
     if (verificaVazia(fila)) {
         return;
     } else {
@@ -64,7 +66,7 @@ void removeCliente (Fila *fila, Node *cliente) {
 int tamanhoFila (Fila *fila) {
     int tam = 0;
     Node *aux;
-    for (aux=fila->inicio; aux=fila->inicio->prox; aux->prox != NULL) {
+    for (aux=fila->inicio; aux != NULL; aux=aux->prox) {
         tam += 1;
     }
     return tam;
@@ -94,6 +96,15 @@ int main() {
 
     if (verificaVazia(fila))
         printf("\nVazia\n\n");
+    else { 
+        printf("\nNao Vazia\nTamanho: %d\n\n", tamanhoFila(fila));
+    }
+
+    removeCliente(fila);
+
+    if (verificaVazia(fila))
+        printf("\nVazia\n\n");
     else 
         printf("\nNao Vazia\nTamanho: %d\n\n", tamanhoFila(fila));
+
 }
