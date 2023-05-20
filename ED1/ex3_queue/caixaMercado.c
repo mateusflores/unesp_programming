@@ -37,16 +37,17 @@ void insereCliente (Fila *fila, Cliente cliente) {
     aux->cliente = cliente;
     aux->prox = NULL;
 
-    if (fila->inicio == fila->fim) {
+    if (fila->inicio == NULL && fila->fim == NULL) {
         fila->inicio = aux;
         fila->fim = aux;    
     } else {
         fila->fim->prox = aux;
         fila->fim = aux;
+        fila->fim->prox = NULL;
     }
 }
 
-void removeCliente (Fila *fila, Node *cliente) {
+int removeCliente (Fila *fila, Node *cliente) {
     if (verificaVazia(fila)) {
         return;
     } else {
@@ -64,6 +65,9 @@ void removeCliente (Fila *fila, Node *cliente) {
 int tamanhoFila (Fila *fila) {
     int tam = 0;
     Node *aux;
+
+    if (fila->inicio == NULL) return 0;
+
     for (aux=fila->inicio; aux=fila->inicio->prox; aux->prox != NULL) {
         tam += 1;
     }
