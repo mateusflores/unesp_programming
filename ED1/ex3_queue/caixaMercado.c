@@ -16,10 +16,12 @@ typedef struct node {
 } Node;
 
 typedef struct {
+    int inseridosAtehOMomento;
+    int clientesAtendidos;
+    int tempoTotal;
+    bool ehPrioritaria;
     Node *inicio;
     Node *fim;
-    int nosInseridos;
-    bool ehPrioritaria;
     //Usados apenas para o controle da fila prioritária
     Node *inicioFilaNormal;
     Node *fimFilaPrioritária;
@@ -33,7 +35,8 @@ bool verificaVazia (Fila *fila) {
 }
 
 void inicializaFila (Fila *fila, bool ehPriritaria) {
-    fila->nosInseridos = 0;
+    fila->clientesAtendidos = 0;
+    fila->tempoTotal = 0;
     fila->fim = NULL;
     fila->inicio = NULL;
     fila->fimFilaPrioritária = NULL;
@@ -46,6 +49,7 @@ void insereCliente (Fila *fila, Cliente cliente) {
     Node *aux = (Node*) malloc(sizeof(Node));
     aux->cliente = cliente;
     aux->prox = NULL;
+    aux->ant = NULL;
 
     if (fila->inicio == NULL) {
         fila->inicio = aux;
@@ -55,7 +59,7 @@ void insereCliente (Fila *fila, Cliente cliente) {
         fila->fim = aux;
         fila->fim->prox = NULL;
     }
-    fila->nosInseridos++;
+    fila->inseridosAtehOMomento++;
 }
 
 // Insere o cliente na fila prioritária, mas faz o controle se o cliente deve ter prioridade no atendimento
@@ -83,7 +87,7 @@ void insereFilaPrioritaria (Fila *fila, Cliente cliente) {
         fila->fim->prox = aux;
         fila->fim = aux;
     }
-    fila->nosInseridos++;
+    fila->inseridosAtehOMomento++;
 }
 
 // Remove o cliente que está no começo da fila
@@ -92,12 +96,13 @@ void removeCliente (Fila *fila) {
         return;
     } else {
         Node *aux = fila->inicio;
+        fila->tempoTotal += fila->inicio->cliente.itensCarrinho;
 
         fila->inicio = fila->inicio->prox;
         fila->inicio->ant = NULL;
         
         free(aux);
-        fila->nosInseridos--;
+        fila->clientesAtendidos++;
     }
 }
 
@@ -106,10 +111,10 @@ void insereNaFila (Fila *fila[], Cliente cliente) {
     if (cliente.ehPrioritario == true) {
         insereFilaPrioritaria(fila[2], cliente);
         printf("\nO cliente %s foi inserido na fila prioritária.", cliente.nome);
-    } else if (cliente.itensCarrinho <= 10 && fila[1]->nosInseridos <= 7) {
+    } else if (cliente.itensCarrinho <= 10 && fila[1]->clientesAtendidos <= 7) {
         insereCliente(fila[1], cliente);
         printf("\nO cliente %s foi inserido na fila rápida.", cliente.nome);    
-    } else if (fila[0]->nosInseridos <= 5 && cliente.itensCarrinho > 10) {
+    } else if (fila[0]->clientesAtendidos <= 5 && cliente.itensCarrinho > 10) {
         insereCliente(fila[0], cliente);
         printf("\nO cliente %s foi inserido na fila convencional.", cliente.nome);
     } else { 
@@ -136,11 +141,23 @@ Cliente criaCliente(char nome[], bool ehPrioritario, int itensCarrinho) {
     return c;
 }
 
+void exibeFila(Fila *filas[]) {
+    for (int i = 0; i < 3; i++) {
+        printf("\n| CAIXA | ==> ");
+        for (Node *aux = filas[i]->inicio; aux != NULL; aux = aux->prox) {
+            printf("%s[%d itens] -> ", aux->cliente.nome, aux->cliente.itensCarrinho);
+        }
+        puts("");
+    }
+}
+
 int main() {
+    // Alocando memória para as três filas
     Fila *caixaConvencional = malloc(sizeof(Fila));
     Fila *caixaRapido = malloc(sizeof(Fila));
     Fila *caixaPrioritario = malloc(sizeof(Fila));
 
+    // Inicializando as filas
     inicializaFila(caixaConvencional, false);
     inicializaFila(caixaPrioritario, true);
     inicializaFila(caixaRapido, false);
@@ -164,4 +181,8 @@ int main() {
     insereNaFila(listaCaixas, c6);
     insereNaFila(listaCaixas, c7);
 
+    exibeFila(listaCaixas);
+    puts("--------------------------");
+    removeCliente(listaCaixas[0]);
+    exibeFila(listaCaixas);
 }
