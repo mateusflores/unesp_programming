@@ -68,6 +68,16 @@ void removeCliente (Fila *fila) {
     }
 }
 
+// Identifica qual a fila correta para o cliente
+void insereNaFila (Fila *fila[], Cliente cliente) {
+    if (cliente.ehPrioritario == true)
+        insereCliente(fila[2], cliente);
+    else if (cliente.itensCarrinho <= 10 && fila[1]->nosInseridos <= 7)
+        insereCliente(fila[1], cliente);
+    
+    
+}
+
 int tamanhoFila (Fila *fila) {
     int tam = 0;
     Node *aux;
