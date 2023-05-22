@@ -94,8 +94,9 @@ void insereFilaPrioritaria (Fila *fila, Cliente cliente) {
 }
 
 // Remove o cliente que está no começo da fila
-void removeCliente (Fila *fila) {
+void removerCliente (Fila *fila) {
     if (verificaVazia(fila)) {
+        printf("\nTodos os clientes da fila foram atendidos.");
         return;
     } else {
         Node *aux = fila->inicio;
@@ -133,6 +134,39 @@ int tamanhoFila (Fila *fila) {
         tam += 1;
     }
     return tam;
+}
+
+void atenderClientes (Fila *filas[]) {
+    for (int i = 0; i<3; i++) {
+        for (Node *aux = filas[i]->inicio; aux != NULL; aux = aux->prox) {
+            if (i == 0 && filas[i]->inseridosAtehOMomento <= 5) {
+                printf("\nO cliente nao prioritario %s (%d itens) esta sendo atendido no caixa convencional", aux->cliente.nome, aux->cliente.itensCarrinho);
+                removerCliente(filas[i]);
+                int num = tamanhoFila(filas[i]);
+                printf("O cliente terminou de ser atendido.\n Tamanho atual da fila convencional: %d", num);
+            } else if (i == 0 && filas[i]->inseridosAtehOMomento > 5) {
+                printf("\nCAIXA CONVENCIONAL FECHADO\nRedirecionando clientes para o final da fila prioritaria.");
+                insereFilaPrioritaria(filas[2], filas[i]->inicio->cliente);
+                aux = filas[i]->inicio;
+                filas[i]->inicio = filas[i]->inicio->prox;
+                free(aux);
+            } else if (i == 1 && filas[i]->inseridosAtehOMomento <= 7) {
+                printf("\nO cliente nao prioritario %s (%d itens) esta sendo atendido no caixa rapido", aux->cliente.nome, aux->cliente.itensCarrinho);
+                removerCliente(filas[i]);
+                printf("O cliente terminou de ser atendido.\n Tamanho atual da fila rapida: %d", tamanhoFila(filas[i]));
+            } else if (i == 1 && filas[i]->inseridosAtehOMomento > 7) {
+                printf("\nCAIXA RAPIDO FECHADO\nRedirecionando clientes para o final da fila prioritaria.");
+                insereFilaPrioritaria(filas[2], filas[i]->inicio->cliente);
+                aux = filas[i]->inicio;
+                filas[i]->inicio = filas[i]->inicio->prox;
+                free(aux);
+            } else {
+                printf("\nO cliente prioritario %s (%d itens) esta sendo atendido no caixa prioritario", aux->cliente.nome, aux->cliente.itensCarrinho);
+                removerCliente(filas[i]);
+                printf("O cliente terminou de ser atendido.\n Tamanho atual da fila prioritario: %d", tamanhoFila(filas[i]));
+            }
+        }
+    }
 }
 
 // Gera um cliente aleatório
@@ -194,5 +228,5 @@ int main() {
 
     puts("");
     puts("--------------------------"); 
-    exibeFila(listaCaixas);
+    atenderClientes(listaCaixas);
 }
