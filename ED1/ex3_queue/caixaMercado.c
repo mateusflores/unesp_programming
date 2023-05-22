@@ -1,7 +1,10 @@
+// Mateus Gomes Flores (RA: 221150391)
+// gcc -std=c99 -pedantic -Wall -lm -o caixaMercado caixaMercado.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
 typedef struct {
     char nome[30];
@@ -34,14 +37,14 @@ bool verificaVazia (Fila *fila) {
         return false;
 }
 
-void inicializaFila (Fila *fila, bool ehPriritaria) {
+void inicializaFila (Fila *fila, bool ehPrioritaria) {
     fila->clientesAtendidos = 0;
     fila->tempoTotal = 0;
     fila->fim = NULL;
     fila->inicio = NULL;
     fila->fimFilaPrioritária = NULL;
     fila->inicioFilaNormal = NULL;
-    fila->ehPrioritaria = ehPriritaria;
+    fila->ehPrioritaria = ehPrioritaria;
 }
 
 // Insere o cliente no final da fila
@@ -132,26 +135,38 @@ int tamanhoFila (Fila *fila) {
     return tam;
 }
 
-Cliente criaCliente(char nome[], bool ehPrioritario, int itensCarrinho) {
-    Cliente c;
-    strcpy(c.nome, nome);
-    c.ehPrioritario = ehPrioritario;
-    c.itensCarrinho = itensCarrinho;
+// Gera um cliente aleatório
+Cliente criaCliente(bool ehPrioritario, int quantidadeItens) {
+    char nomesAleatorios[40][30] = {"Mateus", "Isabel ", "Joao", "Pedro", "Ana", "Maria", "Juliana", "Marcos", "Ricardo", "Joana", "Leonardo", "Wilson", "Claudia",
+    "Gilberto", "Isabela", "Giovana", "Pamela", "Lucas", "Marcelo", "Rodrigo", "Jorge", "Rubens", "Luana", "Karen", "Adamastor", "Nestor", "Petrucio", "Leona",
+    "Sebastiao", "Rogerio", "Lurdes", "Benedito", "Gisele", "Julia", "Natan", "Bartolomeu", "Bruno", "Paulo", "Eduardo", "Rafaela"};
 
+    Cliente c;
+    strcpy(c.nome, nomesAleatorios[rand() % 40]);
+    c.ehPrioritario = ehPrioritario;
+    c.itensCarrinho = quantidadeItens;
     return c;
 }
 
 void exibeFila(Fila *filas[]) {
     for (int i = 0; i < 3; i++) {
-        printf("\n| CAIXA | ==> ");
+        if (i == 0)
+            printf("\n* { CAIXA CONVENCIONAL } ==> ");
+        else if (i == 1)
+            printf("\n*       { CAIXA RAPIDO } ==> ");
+        else 
+            printf("\n*  { CAIXA PRIORITARIO } ==> ");
+
         for (Node *aux = filas[i]->inicio; aux != NULL; aux = aux->prox) {
-            printf("%s[%d itens] -> ", aux->cliente.nome, aux->cliente.itensCarrinho);
+            printf("[ %s(%d itens) ] -> ", aux->cliente.nome, aux->cliente.itensCarrinho);
         }
         puts("");
     }
 }
 
 int main() {
+    srand(time(NULL));
+
     // Alocando memória para as três filas
     Fila *caixaConvencional = malloc(sizeof(Fila));
     Fila *caixaRapido = malloc(sizeof(Fila));
@@ -165,24 +180,19 @@ int main() {
     // Agrupando os enderecos de memoria dos caixas em um vetor
     Fila *listaCaixas[3] = {caixaConvencional, caixaRapido, caixaPrioritario};
 
-    Cliente c1 = criaCliente("Mateus", false, 14);
-    Cliente c2 = criaCliente("Petrúcio", false, 30);
-    Cliente c3 = criaCliente("Leona", false, 5);
-    Cliente c4 = criaCliente("Haru", false, 11);
-    Cliente c5 = criaCliente("Kiki", true, 3);
-    Cliente c6 = criaCliente("Kaka", true, 5);
-    Cliente c7 = criaCliente("Nika", false, 2);
+    // Gerando entre 1 e 5 clientes prioritários e direcinando para a fila correta
+    for (int i = 0; i < (rand() % 4 + 1); i++) {
+        int randItens = rand() % 19 + 1;
+        insereNaFila(listaCaixas, criaCliente(true, randItens));
+    }
 
-    insereNaFila(listaCaixas, c1);
-    insereNaFila(listaCaixas, c2);
-    insereNaFila(listaCaixas, c3);
-    insereNaFila(listaCaixas, c4);
-    insereNaFila(listaCaixas, c5);
-    insereNaFila(listaCaixas, c6);
-    insereNaFila(listaCaixas, c7);
+    // Gerando entre 10 e 20 clientes não prioritários e direcinando para a fila correta
+    for (int i = 0; i < (rand() % 9 + 11); i++) {
+        int randItens = rand() % 19 + 1;
+        insereNaFila(listaCaixas, criaCliente(false, randItens));
+    }
 
-    exibeFila(listaCaixas);
-    puts("--------------------------");
-    removeCliente(listaCaixas[0]);
+    puts("");
+    puts("--------------------------"); 
     exibeFila(listaCaixas);
 }
