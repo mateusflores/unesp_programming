@@ -82,7 +82,7 @@ int main() {
     List *list = malloc(sizeof(List));
     gerarNumerosLista(list);
     exibirList(list);
-    inserirNumeroOrdenado(list, -2);
+    inserirNumeroOrdenado(list, 10);
     printf("\nNova lista:\n");
     exibirList(list);
 }
