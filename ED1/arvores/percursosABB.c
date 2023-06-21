@@ -9,6 +9,11 @@ struct node {
     p_node direita, esquerda;
 };
 
+typedef struct entrada {
+    char in[3];
+    struct entrada *prox;
+} Entrada;
+
 p_node criarArvore(int chave) {
     p_node raiz = malloc(sizeof(struct node));
     raiz->chave = chave;
@@ -65,8 +70,22 @@ void deletarArvore(p_node raiz) {
     }
 }
 
-void entradaDados() {
+void lerEntrada(Entrada *entradas) {
+    Entrada *aux = entradas;
+    for (aux; aux != NULL; aux = aux->prox);
+    aux = malloc(sizeof(Entrada));
 
+    /** CONTINUAR */
+}
+
+void entradaDados() {
+    Entrada *entradas = NULL;
+    int n;
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+
+    }
 }
 
 int main() {
