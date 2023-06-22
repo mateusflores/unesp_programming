@@ -73,26 +73,33 @@ typedef struct entrada {
     struct entrada *prox;
 } Entrada;
 
+void removerQuebraDeLinha(char *txt, int n) {
+    for (int i = 0; i < n; i++) {
+        if (txt[i] == '\n') {
+            txt[i] = '\0';
+            return;
+        }
+    }
+}
+
 Entrada* lerComandos(int quantidadeComandos) {
     int n = 0;
     Entrada *head = malloc(sizeof(Entrada));
-    Entrada *aux;
+    Entrada *aux = head;
+    char buff[10];
     while (n < quantidadeComandos) {
-        if (n == 0) {
-            scanf("%d", &head->O);
-            aux = malloc(sizeof(Entrada));
-            head->prox = aux;
-            n++;
-        }
-
-        if (n < (quantidadeComandos-1)) {
-            scanf("%d %d", &aux->O, &aux->I);
-            aux->prox = malloc(sizeof(Entrada));
-            aux = aux->prox;
+        if (n == 0)
+            getchar();
+        fgets(buff, sizeof(buff), stdin);
+        removerQuebraDeLinha(buff, 10);
+        sscanf(buff, "%d %d", &aux->O, &aux->I);
+        
+        if (n == (quantidadeComandos-1)) {
+            aux->prox = NULL;
             n++;
         } else {
-            scanf("%d", &aux->O);
-            aux->prox = NULL;
+            aux->prox = malloc(sizeof(Entrada));
+            aux = aux->prox;
             n++;
         }
     }
@@ -106,21 +113,26 @@ int processarComandos(Entrada *entradas) {
         switch (aux->O)
         {
         case 1:
-            
+            raiz = criarArvore(aux->prox->I);
+            aux = aux->prox;
             break;
         case 2:
             inserirChave(raiz, aux->I);
             break;
         case 3:
+            puts("");
             pre_ordem(raiz);
             break;
         case 4:
+            puts("");
             inordem(raiz);
             break;
         case 5:
+            puts("");
             pos_ordem(raiz);
             break;
         case 6:
+            puts("");
             deletarArvore(raiz);
             break;
         default:
@@ -141,9 +153,5 @@ int main() {
 
     Entrada *entradas = lerComandos(quantidadeComandos);
     processarComandos(entradas);
-
-    
-
-
-
+    puts("");
 }
