@@ -9,11 +9,6 @@ struct node {
     p_node direita, esquerda;
 };
 
-typedef struct entrada {
-    char in[4];
-    struct entrada *prox;
-} Entrada;
-
 p_node criarArvore(int chave) {
     p_node raiz = malloc(sizeof(struct node));
     raiz->chave = chave;
@@ -39,7 +34,7 @@ p_node inserirChave(p_node raiz, int valor) {
 
 void pre_ordem(p_node raiz) {
     if (raiz != NULL) {
-        printf("%d ", raiz->chave);
+        printf("|%d|", raiz->chave);
         pre_ordem(raiz->esquerda);
         pre_ordem(raiz->direita);
     }
@@ -49,14 +44,14 @@ void pos_ordem(p_node raiz) {
     if (raiz != NULL) {
         pos_ordem(raiz->esquerda);
         pos_ordem(raiz->direita);
-        printf("%d ", raiz->chave);
+        printf("|%d|", raiz->chave);
     }
 }
 
 void inordem(p_node raiz) {
     if (raiz != NULL) {
         inordem(raiz->esquerda);
-        printf("%d ", raiz->chave);
+        printf("|%d|", raiz->chave);
         inordem(raiz->direita);
     }
 }
@@ -70,63 +65,10 @@ void deletarArvore(p_node raiz) {
     }
 }
 
-// Lê as entradas do usuário e armazena em uma lista encadeada
-Entrada* lerEntradas(Entrada *entradas, int n) {
-    Entrada *aux = malloc(sizeof(Entrada));
-    Entrada *head = aux;
-    for (int i = 0; i < n; i++) {
-        fgetc(stdin);
-        fgets(aux->in, 4, stdin);
 
-        if (i == n-1)
-            aux->prox = NULL;
-        else {
-            aux->prox = malloc(sizeof(Entrada));
-            aux = aux->prox;
-        }
-    }
-    return head;
-}
-
-// Libera a memória alocada para a lista encadeada de entradas
-void liberarEntradas(Entrada *entradas) {
-    Entrada *aux = entradas;
-
-    for (aux; aux != NULL; ) {
-        entradas = entradas->prox;
-        free(aux);
-        aux = entradas;
-    }
-}
-
-void processaEntradas(Entrada *entradas) {
-    Entrada *aux = entradas;
-    for (aux; aux != NULL; aux = aux->prox) {
-        printf("test ");
-    }
-}
-
-void imprimirEntradas(Entrada *entradas) {
-    Entrada *aux = entradas;
-    int i = 0;
-    for (aux; aux != NULL; aux = aux->prox) {
-        puts(aux->in);
-    }
-}
-
-// Recebe e processa as entradas do usuário
-void entradaDados() {
-    int n;
-    scanf("%d", &n);
-    Entrada *entradas = lerEntradas(entradas, n);
-
-    imprimirEntradas(entradas);
-    //processaEntradas(entradas);
-    //liberarEntradas(entradas);
-}
 
 int main() {
 
-    entradaDados();
-    printf("\n\n");
+
+
 }
