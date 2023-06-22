@@ -10,7 +10,7 @@ struct node {
 };
 
 typedef struct entrada {
-    char in[3];
+    char in[4];
     struct entrada *prox;
 } Entrada;
 
@@ -70,42 +70,63 @@ void deletarArvore(p_node raiz) {
     }
 }
 
-void lerEntrada(Entrada *entradas) {
-    Entrada *aux = entradas;
-    for (aux; aux != NULL; aux = aux->prox);
-    aux = malloc(sizeof(Entrada));
+// Lê as entradas do usuário e armazena em uma lista encadeada
+Entrada* lerEntradas(Entrada *entradas, int n) {
+    Entrada *aux = malloc(sizeof(Entrada));
+    Entrada *head = aux;
+    for (int i = 0; i < n; i++) {
+        fgetc(stdin);
+        fgets(aux->in, 4, stdin);
 
-    /** CONTINUAR */
+        if (i == n-1)
+            aux->prox = NULL;
+        else {
+            aux->prox = malloc(sizeof(Entrada));
+            aux = aux->prox;
+        }
+    }
+    return head;
 }
 
+// Libera a memória alocada para a lista encadeada de entradas
+void liberarEntradas(Entrada *entradas) {
+    Entrada *aux = entradas;
+
+    for (aux; aux != NULL; ) {
+        entradas = entradas->prox;
+        free(aux);
+        aux = entradas;
+    }
+}
+
+void processaEntradas(Entrada *entradas) {
+    Entrada *aux = entradas;
+    for (aux; aux != NULL; aux = aux->prox) {
+        printf("test ");
+    }
+}
+
+void imprimirEntradas(Entrada *entradas) {
+    Entrada *aux = entradas;
+    int i = 0;
+    for (aux; aux != NULL; aux = aux->prox) {
+        puts(aux->in);
+    }
+}
+
+// Recebe e processa as entradas do usuário
 void entradaDados() {
-    Entrada *entradas = NULL;
     int n;
     scanf("%d", &n);
+    Entrada *entradas = lerEntradas(entradas, n);
 
-    for (int i = 0; i < n; i++) {
-
-    }
+    imprimirEntradas(entradas);
+    //processaEntradas(entradas);
+    //liberarEntradas(entradas);
 }
 
 int main() {
-    int valores[5] = {8, 3, 12, 5, 11};
 
-    p_node raiz = criarArvore(10);
-    
-    for (int i = 0; i < 5; i++) {
-        inserirChave(raiz, valores[i]);
-    }
-
-    printf("\nPre: ");
-    pre_ordem(raiz);
-    printf("\nPos: ");
-    pos_ordem(raiz);
-    printf("\nIn: ");
-    inordem(raiz);
-    printf("\n");
-
-    deletarArvore(raiz);
-        
-
+    entradaDados();
+    printf("\n\n");
 }
