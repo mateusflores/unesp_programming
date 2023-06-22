@@ -65,9 +65,84 @@ void deletarArvore(p_node raiz) {
     }
 }
 
+/* Recebendo e processando as entradas do usuário */
 
+typedef struct entrada {
+    int O;
+    int I;
+    struct entrada *prox;
+} Entrada;
+
+Entrada* lerComandos(int quantidadeComandos) {
+    int n = 0;
+    Entrada *head = malloc(sizeof(Entrada));
+    Entrada *aux;
+    while (n < quantidadeComandos) {
+        if (n == 0) {
+            scanf("%d", &head->O);
+            aux = malloc(sizeof(Entrada));
+            head->prox = aux;
+            n++;
+        }
+
+        if (n < (quantidadeComandos-1)) {
+            scanf("%d %d", &aux->O, &aux->I);
+            aux->prox = malloc(sizeof(Entrada));
+            aux = aux->prox;
+            n++;
+        } else {
+            scanf("%d", &aux->O);
+            aux->prox = NULL;
+            n++;
+        }
+    }
+    return head;
+}
+
+int processarComandos(Entrada *entradas) {
+    Entrada *aux = entradas;
+    p_node raiz;
+    for (aux; aux != NULL; aux = aux->prox) {
+        switch (aux->O)
+        {
+        case 1:
+            
+            break;
+        case 2:
+            inserirChave(raiz, aux->I);
+            break;
+        case 3:
+            pre_ordem(raiz);
+            break;
+        case 4:
+            inordem(raiz);
+            break;
+        case 5:
+            pos_ordem(raiz);
+            break;
+        case 6:
+            deletarArvore(raiz);
+            break;
+        default:
+            printf("Comando invalido.\n");
+            break;
+        }
+    }
+}
 
 int main() {
+    int quantidadeComandos;
+    scanf("%d", &quantidadeComandos);
+
+    if (quantidadeComandos <= 2) {
+        printf("A quantidade de comandos deve ser maior que 2.\n");
+        return 0;
+    }
+
+    Entrada *entradas = lerComandos(quantidadeComandos);
+    processarComandos(entradas);
+
+    
 
 
 
