@@ -19,7 +19,7 @@ int fib(int n) {
 int multAdicao(int a, int b) {
     if (a == 0 || b == 0)
         return 0;
-    if (b > 1)
+    if (b >= 1)
         return a + multAdicao(a, b-1);
 }
 
@@ -28,6 +28,6 @@ int main() {
     printf("Fatorial de %d eh %d\n", n, fatorial(n));
     printf("Fibonacci de %d eh %d\n", n, fib(n));
     
-    int a = 6, b = 5;
+    int a = 2, b = 3;
     printf("%d x %d = %d\n", a, b, multAdicao(a, b));
 }

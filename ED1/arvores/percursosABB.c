@@ -1,3 +1,4 @@
+// Mateus Gomes Flores
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -106,7 +107,7 @@ Entrada* lerComandos(int quantidadeComandos) {
     return head;
 }
 
-int processarComandos(Entrada *entradas) {
+void processarComandos(Entrada *entradas) {
     Entrada *aux = entradas;
     p_node raiz;
     for (aux; aux != NULL; aux = aux->prox) {
