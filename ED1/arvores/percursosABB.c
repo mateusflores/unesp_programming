@@ -1,3 +1,4 @@
+// Mateus Gomes Flores
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,6 +10,7 @@ struct node {
     p_node direita, esquerda;
 };
 
+<<<<<<< HEAD
 typedef struct entrada {
     char in[4];
     struct entrada *prox;
@@ -19,6 +21,8 @@ p_node iniciaArvore() {
     return raiz;
 }
 
+=======
+>>>>>>> 2842762bdd0ff84bd297e95a2fd826bacebd6c73
 p_node criarArvore(int chave) {
     p_node raiz = malloc(sizeof(struct node));
     raiz->chave = chave;
@@ -73,27 +77,55 @@ void deletarArvore(p_node raiz) {
     }
 }
 
-// Lê as entradas do usuário e armazena em uma lista encadeada
-Entrada* lerEntradas(Entrada *entradas, int n) {
-    Entrada *aux = malloc(sizeof(Entrada));
-    Entrada *head = aux;
+/* Recebendo e processando as entradas do usuário */
+
+typedef struct entrada {
+    int O;
+    int I;
+    struct entrada *prox;
+} Entrada;
+
+void removerQuebraDeLinha(char *txt, int n) {
     for (int i = 0; i < n; i++) {
+<<<<<<< HEAD
         getc(stdin);
         fgets(aux->in, 4, stdin);
+=======
+        if (txt[i] == '\n') {
+            txt[i] = '\0';
+            return;
+        }
+    }
+}
+>>>>>>> 2842762bdd0ff84bd297e95a2fd826bacebd6c73
 
-        if (i == n-1)
+Entrada* lerComandos(int quantidadeComandos) {
+    int n = 0;
+    Entrada *head = malloc(sizeof(Entrada));
+    Entrada *aux = head;
+    char buff[10];
+    while (n < quantidadeComandos) {
+        if (n == 0)
+            getchar();
+        fgets(buff, sizeof(buff), stdin);
+        removerQuebraDeLinha(buff, 10);
+        sscanf(buff, "%d %d", &aux->O, &aux->I);
+        
+        if (n == (quantidadeComandos-1)) {
             aux->prox = NULL;
-        else {
+            n++;
+        } else {
             aux->prox = malloc(sizeof(Entrada));
             aux = aux->prox;
+            n++;
         }
     }
     return head;
 }
 
-// Libera a memória alocada para a lista encadeada de entradas
-void liberarEntradas(Entrada *entradas) {
+void processarComandos(Entrada *entradas) {
     Entrada *aux = entradas;
+<<<<<<< HEAD
 
     for (aux; aux != NULL; ) {
         entradas = entradas->prox;
@@ -121,10 +153,43 @@ void processaEntradas(Entrada *entradas) {
                 deletarArvore(raiz);
             default:
                 printf("=> '%s' operacao invalida.\n", aux->in);
+=======
+    p_node raiz;
+    for (aux; aux != NULL; aux = aux->prox) {
+        switch (aux->O)
+        {
+        case 1:
+            raiz = criarArvore(aux->prox->I);
+            aux = aux->prox;
+            break;
+        case 2:
+            inserirChave(raiz, aux->I);
+            break;
+        case 3:
+            puts("");
+            pre_ordem(raiz);
+            break;
+        case 4:
+            puts("");
+            inordem(raiz);
+            break;
+        case 5:
+            puts("");
+            pos_ordem(raiz);
+            break;
+        case 6:
+            puts("");
+            deletarArvore(raiz);
+            break;
+        default:
+            printf("Comando invalido.\n");
+            break;
+>>>>>>> 2842762bdd0ff84bd297e95a2fd826bacebd6c73
         }
     }
 }
 
+<<<<<<< HEAD
 // Recebe e processa as entradas do usuário
 void entradaDados() {
     int n;
@@ -135,8 +200,18 @@ void entradaDados() {
     //liberarEntradas(entradas);
 }
 
+=======
+>>>>>>> 2842762bdd0ff84bd297e95a2fd826bacebd6c73
 int main() {
+    int quantidadeComandos;
+    scanf("%d", &quantidadeComandos);
 
-    entradaDados();
-    printf("\n\n");
+    if (quantidadeComandos <= 2) {
+        printf("A quantidade de comandos deve ser maior que 2.\n");
+        return 0;
+    }
+
+    Entrada *entradas = lerComandos(quantidadeComandos);
+    processarComandos(entradas);
+    puts("");
 }
