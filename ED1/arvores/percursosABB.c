@@ -14,6 +14,11 @@ typedef struct entrada {
     struct entrada *prox;
 } Entrada;
 
+p_node iniciaArvore() {
+    p_node raiz = malloc(sizeof(p_node));
+    return raiz;
+}
+
 p_node criarArvore(int chave) {
     p_node raiz = malloc(sizeof(struct node));
     raiz->chave = chave;
@@ -29,17 +34,15 @@ p_node inserirChave(p_node raiz, int valor) {
         return raiz->esquerda = criarArvore(valor);
     if (raiz->chave == valor)
         return raiz;
-    
     if (raiz->chave < valor)
         return inserirChave(raiz->direita, valor);
     else 
         return inserirChave(raiz->esquerda, valor);
-    
 }
 
 void pre_ordem(p_node raiz) {
     if (raiz != NULL) {
-        printf("%d ", raiz->chave);
+        printf("|%d|", raiz->chave);
         pre_ordem(raiz->esquerda);
         pre_ordem(raiz->direita);
     }
@@ -49,14 +52,14 @@ void pos_ordem(p_node raiz) {
     if (raiz != NULL) {
         pos_ordem(raiz->esquerda);
         pos_ordem(raiz->direita);
-        printf("%d ", raiz->chave);
+        printf("|%d|", raiz->chave);
     }
 }
 
 void inordem(p_node raiz) {
     if (raiz != NULL) {
         inordem(raiz->esquerda);
-        printf("%d ", raiz->chave);
+        printf("|%d|", raiz->chave);
         inordem(raiz->direita);
     }
 }
@@ -75,7 +78,7 @@ Entrada* lerEntradas(Entrada *entradas, int n) {
     Entrada *aux = malloc(sizeof(Entrada));
     Entrada *head = aux;
     for (int i = 0; i < n; i++) {
-        fgetc(stdin);
+        getc(stdin);
         fgets(aux->in, 4, stdin);
 
         if (i == n-1)
@@ -101,16 +104,24 @@ void liberarEntradas(Entrada *entradas) {
 
 void processaEntradas(Entrada *entradas) {
     Entrada *aux = entradas;
+    p_node raiz;
     for (aux; aux != NULL; aux = aux->prox) {
-        printf("test ");
-    }
-}
-
-void imprimirEntradas(Entrada *entradas) {
-    Entrada *aux = entradas;
-    int i = 0;
-    for (aux; aux != NULL; aux = aux->prox) {
-        puts(aux->in);
+        switch (aux->in[0]) {
+            case '1':
+                raiz = iniciaArvore();
+            case '2':
+                inserirChave(raiz, aux->in[2]);
+            case '3':
+                pre_ordem(raiz);
+            case '4':
+                inordem(raiz);
+            case '5':
+                pos_ordem(raiz);
+            case '6':
+                deletarArvore(raiz);
+            default:
+                printf("=> '%s' operacao invalida.\n", aux->in);
+        }
     }
 }
 
@@ -120,8 +131,7 @@ void entradaDados() {
     scanf("%d", &n);
     Entrada *entradas = lerEntradas(entradas, n);
 
-    imprimirEntradas(entradas);
-    //processaEntradas(entradas);
+    processaEntradas(entradas);
     //liberarEntradas(entradas);
 }
 
