@@ -1,0 +1,108 @@
+* Questão 1 *
+
+Um arquivo contém dados sobre uma série de anime que foi inspirada em um mangá.
+Cada linha do arquivo registra um evento envolvendo dois personagens. Há três
+tipos de eventos: quando os dois personagens se conheceram pela primeira vez,
+quando o primeiro salvou o segundo, ou quando o primeiro contou o seu sonho de
+vida para o segundo. 
+
+O formato do arquivo é muito próximo do formato CSV ("comma separated values",
+ou 'valores separados por vírgulas'): os campos são separados por vírgulas, e
+os registros são separados como linhas de texto (caracter '\n'). A diferença
+entre este formato e o CSV é que cada registro contém, no início, o tamanho
+em formato binário (o formato CSV é completamente textual).
+
+Os campos são os seguintes (na ordem em que se posicionam no registro):
+* tamanho do registro, como inteiro
+* número identificador do evento (id), como string
+* nome do personagem 1, como string
+* nome do personagem 2, como string
+* descrição do tipo de evento (existem 3 tipos, como já mencionado), string
+* número do capítulo do mangá em que o evento ocorreu, string
+* número do episódio do anime em que o evento ocorreu, string
+
+Os 4 bytes iniciais do arquivo são o header do arquivo. 
+
+Confira o exemplo fornecido juntamente com este enunciado (arquivo anime.csv).
+O header desse exemplo contém o valor binário para -1.
+
+a) Remova um registro baseado no número identificador do evento. No exemplo dado,
+esses números são strings entre 11 e 99. Sorteie um número e remova o registro com
+id mais próximo.
+
+A remoção deve ser dinâmica, isto é, deve-se evitar a escrita completa de um novo
+arquivo, com a única diferença que é a ausência do registro removido. Para isso, 
+deve haver um gerenciamento dos registros removidos e dos subsequentes espaços 
+disponíveis.
+
+Modifique o arquivo com um editor binário, de modo a representar a situação da 
+remoção. Salve o arquivo como resposta-1-a.csv
+
+b) Remova um segundo registro segundo as mesmas especificações do item a. 
+(resposta-1-b.csv)
+
+c) Insira um registro menor que qualquer um dos dois anteriormente removidos
+(menor de propósito). Mostre o arquivo resultante (resposta-1-c.csv).
+
+d) Mostre um programa que calcula a fragmentação interna e a fragmentação
+externa do arquivo, em porcentagem. Como detectar que um registro manifesta 
+fragmentação interna? Como mensurá-la? 
+
+e) Mostre como seria um arquivo separado que contém um índice para todos os 
+eventos de revelação do sonho do personagem 1. O índice deve ser ordenado 
+pelo valor do número de identificação do evento. Edite o arquivo na mão, 
+usando um processador binário.
+
+f) Mostre como seria um segundo arquivo com índice para os eventos de 
+revelação de sonho do personagem 1, mas dessa vez organizado pelo nome do
+personagem. Edite o arquivo na mão, usando um processador binário.
+
+g) Existe vantagem em realizar a compactação dos dados apenas eliminando
+a fragmentação interna?
+
+
+* Questão 2 *
+
+
+a. Codificação Huffman:
+
+   Implemente a codificação Huffman para o seguinte texto:
+
+   Texto Original: "DATA COMPRESSION IS INTERSTING"
+
+   a. Crie uma tabela de frequência para cada caractere no texto.
+   b. Construa uma árvore de Huffman com base na tabela de frequência.
+   c. Gere códigos de Huffman para cada caractere.
+   d. Codifique o texto original usando os códigos de Huffman.
+   e. Decodifique o texto codificado para garantir que corresponda ao texto original.
+
+2. Codificação Shannon-Fano:
+
+   Implemente a codificação Shannon-Fano para o mesmo texto:
+
+   Texto Original: "DATA COMPRESSION IS INTERSTING"
+
+   a. Crie uma tabela de frequência para cada caractere no texto.
+   b. Construa uma árvore de Shannon-Fano com base na tabela de frequência.
+   c. Gere códigos de Shannon-Fano para cada caractere.
+   d. Codifique o texto original usando os códigos de Shannon-Fano.
+   e. Decodifique o texto codificado para garantir que corresponda ao texto original.
+
+3. Compressão Lempel-Ziv-Welch (LZW):
+
+   Implemente a compressão LZW para o seguinte texto:
+
+   Texto Original: "ABABABABAABABAABABABABA"
+
+   a. Inicialize um dicionário com entradas de caracteres individuais.
+   b. Comprima o texto usando o algoritmo LZW.
+   c. Forneça a saída comprimida e o dicionário LZW em cada etapa.
+   d. Descomprima os dados comprimidos para garantir que correspondam ao texto original.
+
+Perguntas:
+
+1. Compare a eficiência da codificação Huffman e da codificação Shannon-Fano para o texto 
+fornecido. Qual algoritmo resulta em uma representação comprimida mais curta e por quê?
+
+2. Na compressão LZW, explique como o dicionário evolui à medida que mais dados são 
+comprimidos. Quais são as vantagens de usar um dicionário dinâmico?
