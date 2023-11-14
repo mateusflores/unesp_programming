@@ -3,26 +3,25 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define MAX_KEYS 3
-
 typedef struct {
-    char codCli[11];
-    char codVei[7];
-    char *nomeCli;
-    char *nomeVei;
-    int numDias;
+    char cod_cli[12];
+    char cod_vei[8];
+    char client[50];
+    char veiculo[50];
+    char dias[4];
 } Registro;
 
 typedef struct BTreeNode {
-    int keys[MAX_KEYS];  // array de chaves
-    struct BTreeNode *children[MAX_KEYS + 1];  // array de ponteiros para os filhos
-    int n;  // número de chaves atualmente no nó
-    bool leaf;
+    int *keys; // array of keys
+    int t;     // minimum degree (defines the range for number of keys)
+    struct BTreeNode **C; // array of child pointers
+    int n;     // current number of keys
+    bool leaf; // is true when node is leaf. Otherwise false
 } BTreeNode;
 
 typedef struct BTree {
-    BTreeNode *root;
-    int t;
+    BTreeNode *root; // pointer to root node
+    int t;  // minimum degree
 } BTree;
 
 int main() {
